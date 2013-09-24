@@ -59,7 +59,7 @@ namespace :puma do
     end
   end
 
-  if Rake::Task['rvm:hook']
+  if Rake::Task.task_defined?('rvm:hook')
     before :start, 'rvm:hook'
     before :stop, 'rvm:hook'
     before :restart, 'rvm:hook'
