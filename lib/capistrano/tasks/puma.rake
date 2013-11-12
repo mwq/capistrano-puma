@@ -31,6 +31,15 @@ namespace :puma do
     end
   end
 
+  desc 'Status puma'
+  task status: :check_sockets_dir do
+    on roles fetch(:puma_role) do
+      within release_path do
+        execute *fetch(:pumactl_cmd), "-S #{state_path} status"
+      end
+    end
+  end
+
   desc 'Restart puma'
   task restart: :check_sockets_dir do
     on roles fetch(:puma_role) do
