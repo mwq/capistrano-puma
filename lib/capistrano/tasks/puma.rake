@@ -1,17 +1,3 @@
-namespace :deploy do
-  task :restart do
-    invoke 'puma:restart'
-  end
-
-  task :stop do
-    invoke 'puma:stop'
-  end
-
-  task :start do
-    invoke 'puma:start'
-  end
-end
-
 namespace :puma do
   desc 'Start puma'
   task start: :check_sockets_dir do
