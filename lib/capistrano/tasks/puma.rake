@@ -28,14 +28,19 @@ namespace :puma do
 
   desc 'Restart puma'
   task restart: :check_sockets_dir do
-    on roles fetch(:puma_role) do
-      within release_path do
-        if test "[[ -f #{state_path} ]]"
-          execute *fetch(:pumactl_cmd), "-S #{state_path} restart"
-        else
-          execute *fetch(:puma_cmd), start_options
+    begin
+      on roles fetch(:puma_role) do
+        within release_path do
+          if test "[[ -f #{state_path} ]]"
+            execute *fetch(:pumactl_cmd), "-S #{state_path} restart"
+          else
+            execute *fetch(:puma_cmd), start_options
+          end
         end
       end
+    rescue Exception => ex
+      puts "Failed to restart puma: #{ex}\nAssuming not started."
+      invoke 'puma:start'
     end
   end
 
